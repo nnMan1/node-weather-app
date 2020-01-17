@@ -8,12 +8,12 @@ const client = new Client({
 
 client.connect()
 
-client.query('insert into tablea1(id,name) values (1,\'Velibor Dosljak2\')' , (err,res) => {
+client.query('insert into tablea1(name) values (\'Ana\')' , (err,res) => {
     console.log(err,res)
     client.end()
 })
 
-//client.query('select * from tablea1', (err,res) => {
-//    console.log(err,res)
-//    client.end()
-//})
+client.query('select * from tablea1', (err,res) => {
+    console.log(err,res)
+   client.end()
+})

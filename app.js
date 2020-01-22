@@ -37,6 +37,7 @@ app.get('', (req, res) => {
 })
 
 app.get('/stub*', require('./routes/stubovi'));
+app.post('/stub', require('./routes/stubovi'));
 app.get('/stanje*', require('./routes/stanja'));
 app.post('/stanje', require('./routes/stanja'));
 

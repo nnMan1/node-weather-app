@@ -5,32 +5,39 @@ const State = require('../models/Stanje');
 
 router.get('/stanje', (req, res) => {
     if (id = req.query.id) {
-        console.log(id);
-        State.findOne({
-            where: {
-                id: id
-            }
-        })
-            .then (
-                state => {
-                    res.send(
-                        {data: state}
-                    )
-                }
-            )
-            .catch(err => console.log(err))
+       getSingleStanje(id, req, res);
     } else {
-        State.findAll()
-            .then( states => {
-                console.log(states)
-                res.send(
-                {data: states}
-                )
-                res.sendStatus(200)
-            })
-        }
-    });
+       getAllStanje(req,res);
+    }
+});
 
+const getSingleStanje = (id, req, res) => {
+    console.log(id);
+    State.findOne({
+        where: {
+            id: id
+        }
+    })
+        .then (
+            state => {
+                res.send(
+                    {data: state}
+                )
+            }
+        )
+        .catch(err => console.log(err))
+}
+
+const getAllStanje = (req, res) => {
+    State.findAll()
+    .then( states => {
+        console.log(states)
+        res.send(
+        {data: states}
+        )
+        res.sendStatus(200)
+    })
+}
 
 router.post('/stanje', (req, res) => {
     let { naziv } = req.body

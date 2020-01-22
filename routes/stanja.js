@@ -53,7 +53,6 @@ router.post('/stanje', (req, res) => {
     })
         . then( state => res.redirect('/stanje'))
         .catch( err => console.log(err))
-    
 })
 
 

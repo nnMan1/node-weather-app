@@ -11,6 +11,13 @@ const Stub = db.define('stub', {
     geometry: {
         type: Sequelize.GEOMETRY('POINT'),
         allowNull: false
+    },
+    stanje_id: {
+        type: Sequelize.INTEGER,
+        references: {
+            model: 'stanje',
+            key: 'id'
+        }
     }
 }, {
     freezeTableName: true, // Model tableName will be the same as the model name

@@ -1,18 +1,14 @@
-const {Pool, Client} = require('pg')
-const connectionString = 'postgressql://postgres:natasa12\@@localhost:5432/elektro'
+const Sequelize = require('sequelize');
 
-const client = new Client({
-    connectionString: connectionString,
-})
+module.exports =  new Sequelize('elektro', 'postgres', 'natasa12@', {
+  host: 'localhost',
+  dialect: 'postgres',
+  operatorsAliases: false,
 
-client.connect()
-
-// client.query('insert into stanje(naziv) values (\'Ana\')' , (err,res) => {
-//     console.log(err,res)
-//     client.end()
-// })
-
-client.query('select * from stanje', (err,res) => {
-    console.log(err,res)
-   client.end()
-})
+  pool: {
+    max: 5,
+    min: 0,
+    acquire: 30000,
+    idle: 10000
+  },
+});

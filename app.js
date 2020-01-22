@@ -1,16 +1,22 @@
 const path = require('path')
 const express = require('express')
 const hbs = require('hbs')
-const geocode = require('./utils/geocode')
-const forecast = require('./utils/forecast')
+const geocode = require('./src/utils/geocode')
+const forecast = require('./src/utils/forecast')
+const bodyParser = require('body-parser');
 
 const app = express()
 const port = process.env.PORT || 3000
 
+const db = require('./config/database')
+db.authenticate()
+    .then(() => console.log('Database connected'))
+    .catch(err => console.log('Err: ' + err))
+
 // Define paths for Express config
-const publicDirectoryPath = path.join(__dirname, '../public')
-const viewsPath = path.join(__dirname, '../templates/views')
-const partialsPath = path.join(__dirname, '../templates/partials')
+const publicDirectoryPath = path.join(__dirname, './public')
+const viewsPath = path.join(__dirname, './templates/views')
+const partialsPath = path.join(__dirname, './templates/partials')
 
 // Setup handlebars engine and views location
 app.set('view engine', 'hbs')
@@ -19,6 +25,7 @@ hbs.registerPartials(partialsPath)
 
 // Setup static directory to serve
 app.use(express.static(publicDirectoryPath))
+app.use(bodyParser.urlencoded({ extended: true }));
 
 app.get('', (req, res) => {
     res.render('index', {
@@ -26,6 +33,10 @@ app.get('', (req, res) => {
         name: 'Andrew Mead'
     })
 })
+
+app.get('/stub*', require('./routes/stubovi'));
+app.get('/stanje*', require('./routes/stanja'));
+app.post('/stanje', require('./routes/stanja'));
 
 app.get('/about', (req, res) => {
     res.render('about', {

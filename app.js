@@ -3,6 +3,7 @@ const express = require('express')
 const hbs = require('hbs')
 const geocode = require('./src/utils/geocode')
 const forecast = require('./src/utils/forecast')
+const querystring = require('querystring');
 const bodyParser = require('body-parser');
 
 const app = express()
@@ -26,6 +27,7 @@ hbs.registerPartials(partialsPath)
 // Setup static directory to serve
 app.use(express.static(publicDirectoryPath))
 app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json());
 
 app.get('', (req, res) => {
     res.render('index', {

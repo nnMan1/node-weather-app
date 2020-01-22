@@ -3,14 +3,34 @@ const router = express.Router();
 const db = require('../config/database');
 const State = require('../models/Stanje');
 
-router.get('/stanje', (req, res) => 
-    State.findAll()
-        .then( states => {
-            console.log(states)
-            res.sendStatus(200)
+router.get('/stanje', (req, res) => {
+    if (id = req.query.id) {
+        console.log(id);
+        State.findOne({
+            where: {
+                id: id
+            }
         })
-        .catch(err => console.log(err))
-);
+            .then (
+                state => {
+                    res.send(
+                        {data: state}
+                    )
+                }
+            )
+            .catch(err => console.log(err))
+    } else {
+        State.findAll()
+            .then( states => {
+                console.log(states)
+                res.send(
+                {data: states}
+                )
+                res.sendStatus(200)
+            })
+        }
+    });
+
 
 router.post('/stanje', (req, res) => {
     let { naziv } = req.body

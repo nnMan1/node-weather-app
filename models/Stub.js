@@ -17,6 +17,6 @@ const Stub = db.define('stub', {
     underscored: true
 });
 
-Stub.belongsTo(Stanje, {targetKey: 'id'});
+Stub.belongsTo(Stanje)
 
 module.exports = Stub

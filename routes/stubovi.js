@@ -2,12 +2,14 @@ const express = require('express')
 const router = express.Router()
 const Stub = require('../models/Stub')
 const db = require('../config/database')
+const Stanje = require('../models/Stanje')
 
 router.get('/stub', (req, res) => {
-    Stub.findAll()
+    Stub.findAll({
+        include: Stanje
+    })
         .then( stubovi => {
-            console.log(stubovi)
-            res.sendStatus(200)
+            res.send(stubovi)
         })
         .catch(err => console.log(err))
 })

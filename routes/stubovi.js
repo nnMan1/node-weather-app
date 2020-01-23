@@ -40,6 +40,7 @@ const getSingleStub = (id, req, res) => {
         .catch(err => console.log(err))
 }
 
+
 router.post('/stub', (req, res) => {
     let {  geo_duzina, geo_sirina, stanje_id } = req.body
 

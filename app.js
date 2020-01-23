@@ -45,6 +45,9 @@ app.post('/stanje', require('./routes/stanja'));
 app.get('/trafostanica*', require('./routes/trafostanice'));
 app.post('/trafostanica', require('./routes/trafostanice'));
 
+app.get('/potrosac*', require('./routes/potrosaci'));
+app.post('/potrosac', require('./routes/potrosaci'));
+
 app.get('/about', (req, res) => {
     res.render('about', {
         title: 'About Me',

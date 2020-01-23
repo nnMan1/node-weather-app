@@ -48,6 +48,9 @@ app.post('/trafostanica', require('./routes/trafostanice'));
 app.get('/potrosac*', require('./routes/potrosaci'));
 app.post('/potrosac', require('./routes/potrosaci'));
 
+app.get('/tip_voda*', require('./routes/tipoviVoda'));
+app.post('/tip_voda', require('./routes/tipoviVoda'));
+
 app.get('/about', (req, res) => {
     res.render('about', {
         title: 'About Me',

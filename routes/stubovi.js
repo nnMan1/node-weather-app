@@ -44,6 +44,8 @@ const getSingleStub = (id, req, res) => {
 router.post('/stub', (req, res) => {
     let {  geo_duzina, geo_sirina, stanje_id } = req.body
 
+    console.log(req.body)
+
     if (geo_duzina === undefined || geo_sirina === undefined || stanje_id === undefined) {
       res.sendStatus(400);
       return;

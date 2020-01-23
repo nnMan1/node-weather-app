@@ -53,3 +53,5 @@ button {
     color: white;
     padding: 8px;
 }
+
+#map { height: 580px; }

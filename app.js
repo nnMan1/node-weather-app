@@ -31,8 +31,8 @@ app.use(bodyParser.json());
 
 app.get('', (req, res) => {
     res.render('index', {
-        title: 'Weather',
-        name: 'Andrew Mead'
+        title: 'Elektro sistem',
+        name: 'Dosljak Velibor'
     })
 })
 
@@ -51,20 +51,9 @@ app.post('/potrosac', require('./routes/potrosaci'));
 app.get('/tip_voda*', require('./routes/tipoviVoda'));
 app.post('/tip_voda', require('./routes/tipoviVoda'));
 
-app.get('/about', (req, res) => {
-    res.render('about', {
-        title: 'About Me',
-        name: 'Andrew Mead'
-    })
-})
+app.get('/vod*', require('./routes/vodovi'));
+app.post('/vod', require('./routes/vodovi'));
 
-app.get('/help', (req, res) => {
-    res.render('help', {
-        helpText: 'This is some helpful text.',
-        title: 'Help',
-        name: 'Andrew Mead'
-    })
-})
 
 app.get('/weather', (req, res) => {
     if (!req.query.address) {

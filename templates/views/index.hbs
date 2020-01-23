@@ -5,6 +5,7 @@
 <head>
     <title>Elektro sistem</title>
     <!--link rel="icon" href="/img/weather.png"-->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <link rel="stylesheet" href="/css/styles.css">
      <meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no" />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.0.3/leaflet.js"></script>
@@ -13,6 +14,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.0.3/leaflet.css" />
     <link rel="stylesheet" href="https://cdn.maptiler.com/mapbox-gl-js/v0.53.0/mapbox-gl.css" />
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    
 </head>
 
 <body>
@@ -20,6 +22,14 @@
         {{>header}}
 
          <div id="map"></div>
+         <div id = "addElementContainer">
+            <span> <input type="radio" name="elementToAdd" value="Stub"> Stub</span>
+            <span> <input type="radio" name="elementToAdd" value="Vod"> Vod</span>
+            <span><input type="radio" name="elementToAdd" value="Trafostanica"> Trafostanica</span>
+            <span><input type="radio" name="elementToAdd" value="Potrosac">Potrosac</span>
+            
+            <button id = "addElementButton" type="button" class="btn btn-primary">Dodaj element</button>
+         </div>
     </div>
 
     {{>footer}}

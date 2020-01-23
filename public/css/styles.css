@@ -1,7 +1,7 @@
 body {
     color: #333333;
     font-family: arial;
-    max-width: 650px;
+    max-width: 60%;
     margin: 0 auto;
     padding: 0 16px;
 
@@ -46,12 +46,18 @@ input {
     padding: 8px;
 }
 
-button {
-    cursor: pointer;
-    border: 1px solid #888888;
-    background: #888888;
-    color: white;
-    padding: 8px;
+#addElementContainer {
+    padding-top: 50px;
+    display: grid;
+    grid-template-columns: 150px  150px 150px 150px auto;
+    justify-items: start;
+    align-items: center;
 }
 
-#map { height: 580px; }
+#map { height: 580px;}
+
+#map .addElement {
+     cursor: crosshair;
+}
+
+

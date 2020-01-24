@@ -21,27 +21,9 @@ var selectedValue = undefined
 //     .setContent('<p>Hello world!<br />This is a nice popup.</p>')
 //     .openOn(map);
 
-map.on('click', function(e) {        
-        var popLocation= e.latlng;
-       
-        switch (selectedValue) {
-            case "Stub" :
-                addStub({
-                            geo_duzina: popLocation.lat,
-                            geo_sirina: popLocation.lng,
-                            stanje_id: 1
-                        });
-                    break;
-            default:
-                    break;
-        }   
-              
-    });
-
-
 //show all stubovi
 function showAllStubovi () {
-    $.ajax('/stub', {
+    $.ajax('/api/stub', {
         data: {
             
         }
@@ -62,27 +44,6 @@ function showAllStubovi () {
             alert('Request failed.  Returned status of ' + status);
         }
     );
-}
-
-function addStub (data) {
-
-    document.getElementById("map").style.cursor = "move";
-
-    $.ajax('http://localhost:3001/stub', {
-            method: 'POST',
-            data: data
-        })
-        .then(
-            function success(name) {
-                if (name !== newName) {
-                    alert('Something went wrong.  Name is now ' + name);
-                }
-            },
-        
-            function fail(data, status) {
-                alert('Request failed.  Returned status of ' + status);
-            }
-        );
 }
 
 
@@ -114,11 +75,11 @@ addElementTypeRadioButtons.forEach(radioButton => {
 });
 
 
-var addElementButton = document.getElementById("addElementButton");
-addElementButton.disabled = true;
-addElementButton.onclick = () => {
-    document.getElementById("map").style.cursor = "crosshair";
-}
+// var addElementButton = document.getElementById("addElementButton");
+// addElementButton.disabled = true;
+// addElementButton.onclick = () => {
+//     document.getElementById("map").style.cursor = "crosshair";
+// }
 
 
 showAllStubovi()

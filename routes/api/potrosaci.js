@@ -1,8 +1,8 @@
 const express = require('express')
 const router = express.Router()
-const Potrosac = require('../models/Potrosac')
-const db = require('../config/database')
-const Stanje = require('../models/Stanje')
+const Potrosac = require('../../models/Potrosac')
+const db = require('../../config/database')
+const Stanje = require('../../models/Stanje')
 
 
 router.get('/potrosac', (req, res) => {

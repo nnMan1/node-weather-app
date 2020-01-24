@@ -1,11 +1,11 @@
 const express = require('express')
 const router = express.Router()
-const Stub = require('../models/Stub')
-const db = require('../config/database')
-const Stanje = require('../models/Stanje')
+const Stub = require('../../models/Stub')
+const db = require('../../config/database')
+const Stanje = require('../../models/Stanje')
 
 
-router.get('/stub', (req, res) => {
+router.get('/api/stub', (req, res) => {
     if (id = req.query.id) {
         getSingleStub(id, req, res);
      } else {
@@ -41,7 +41,7 @@ const getSingleStub = (id, req, res) => {
 }
 
 
-router.post('/stub', (req, res) => {
+router.post('/api/stub', (req, res) => {
     let {  geo_duzina, geo_sirina, stanje_id } = req.body
 
     console.log(req.body)

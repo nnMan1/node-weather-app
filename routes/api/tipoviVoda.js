@@ -1,45 +1,43 @@
 const express = require('express');
 const router = express.Router();
-const db = require('../config/database');
-const State = require('../models/Stanje');
+const db = require('../../config/database');
+const TipVoda = require('../../models/TipVoda');
 
-router.get('/stanje', (req, res) => {
+router.get('/tip_voda', (req, res) => {
     if (id = req.query.id) {
-       getSingleStanje(id, req, res);
+       getSingleTipVoda(id, req, res);
     } else {
-       getAllStanje(req,res);
+       getAllTipVoda(req,res);
     }
 });
 
-const getSingleStanje = (id, req, res) => {
+const getSingleTipVoda = (id, req, res) => {
     console.log(id);
-    State.findOne({
+    TipVoda.findOne({
         where: {
             id: id
         }
     })
         .then (
-            state => {
+            tipVoda => {
                 res.send(
-                    {data: state}
+                    {data: tipVoda}
                 )
             }
         )
         .catch(err => console.log(err))
 }
 
-const getAllStanje = (req, res) => {
-    State.findAll()
-    .then( states => {
-        console.log(states)
+const getAllTipVoda = (req, res) => {
+    TipVoda.findAll()
+    .then( tipVoda => {
         res.send(
-        {data: states}
+            {data: tipVoda}
         )
-        res.sendStatus(200)
     })
 }
 
-router.post('/stanje', (req, res) => {
+router.post('/tip_voda', (req, res) => {
     let { naziv } = req.body
     console.log(req.body)
     console.log(naziv)
@@ -48,10 +46,10 @@ router.post('/stanje', (req, res) => {
       return;
     }
 
-    State.create({
+    TipVoda.create({
         naziv: naziv
     })
-        . then( state => res.redirect('/stanje'))
+        . then( state => res.redirect('/tip_voda'))
         .catch( err => console.log(err))
 })
 

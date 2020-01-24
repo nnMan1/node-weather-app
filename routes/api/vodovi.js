@@ -1,9 +1,9 @@
 const express = require('express');
 const router = express.Router();
-const db = require('../config/database');
-const Vod = require('../models/Vod');
-const Stanje = require('../models/Stanje');
-const TipVoda = require('../models/TipVoda');
+const db = require('../../config/database');
+const Vod = require('../../models/Vod');
+const Stanje = require('../../models/Stanje');
+const TipVoda = require('../../models/TipVoda');
 
 router.get('/vod', (req, res) => {
     if (id = req.query.id) {

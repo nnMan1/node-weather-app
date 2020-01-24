@@ -1,8 +1,8 @@
 const express = require('express')
 const router = express.Router()
-const Trafostanica = require('../models/Trafostanica')
-const db = require('../config/database')
-const Stanje = require('../models/Stanje')
+const Trafostanica = require('../../models/Trafostanica')
+const db = require('../../config/database')
+const Stanje = require('../../models/Stanje')
 
 
 router.get('/trafostanica', (req, res) => {

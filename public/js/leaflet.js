@@ -11,7 +11,6 @@ var stuboviMarkers = L.layerGroup().addTo(map);
 var vodovi = [];
 var trafostanice = [];
 var gradovi = [];
-var selectedValue = undefined
 
 
 // var popLocation= new L.LatLng(42.77524, 19.42383);
@@ -72,24 +71,5 @@ var currentZoom = map.getZoom();
         map.addLayer(stuboviMarkers);
     }
 }
-
-
-var addElementTypeRadioButtons = document.getElementsByName('elementToAdd') 
-
-addElementTypeRadioButtons.forEach(radioButton => {
-    radioButton.onclick = (e) => {
-        selectedValue = e.target.value
-        console.log(e.target.value)
-        addElementButton.disabled = false;
-    }
-});
-
-
-// var addElementButton = document.getElementById("addElementButton");
-// addElementButton.disabled = true;
-// addElementButton.onclick = () => {
-//     document.getElementById("map").style.cursor = "crosshair";
-// }
-
 
 showAllStubovi()

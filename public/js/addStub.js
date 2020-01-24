@@ -5,9 +5,11 @@ function addStub (data) {
         })
         .then(
             function success(stub) {
-                let marker = L.marker(stub.geometry.coordinates).addTo(map).on('click', function(e) {
+                let marker = L.marker(stub.geometry.coordinates).addTo(map)
+                marker.data = stub
+                marker.on('click', function(e) {
                     if (ukloniStub) {
-                        ukloniStub(e.target.data)
+                        ukloniStub(e.target)
                     }
                 });
                 stuboviMarkers.addLayer(marker);
@@ -47,4 +49,9 @@ function ukloniStub (marker) {
             alert('Request failed.  Returned status of ');
         }
     );
+}
+
+document.getElementById("addElementButton").onclick 
+= () => {
+    window.open("/","_self")
 }

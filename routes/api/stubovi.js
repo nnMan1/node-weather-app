@@ -3,42 +3,38 @@ const router = express.Router()
 const Stub = require('../../models/Stub')
 const db = require('../../config/database')
 const Stanje = require('../../models/Stanje')
+const Sequelize = require('sequelize');
+const Op = Sequelize.Op
 
 
 router.get('/api/stub', (req, res) => {
-    if (id = req.query.id) {
-        getSingleStub(id, req, res);
-     } else {
-        getAllStub(req,res);
-     } 
-})
+    let where = { [Op.and]: [] };
+    let attributes = Object.keys(Stub.rawAttributes);
+    let order = []
+    let {  geo_duzina, geo_sirina, rastojanje, id } = req.query
+    if (geo_duzina && geo_sirina && rastojanje) {     
+        var location = Sequelize.literal(`ST_GeomFromText('POINT(${geo_duzina} ${geo_sirina})', 4326)`) ;
+        var distance = Sequelize.fn('ST_DistanceSphere',Sequelize.literal('"stub"."geometry"'), location); 
+        attributes.push([distance, 'distance']);
+        // others.push('distance');
+        whereTmp = Sequelize.where(distance,  {[Op.lt]: rastojanje})
+        where[Op.and].push(whereTmp)
+    }  
+    
+    console.log(where)
+    
+    if (id) { where.id = id }
 
-const getAllStub = (req, res) => {
     Stub.findAll({
-        include: Stanje
+        attributes: attributes,
+        include: Stanje,
+        where: where
     })
         .then( stubovi => {
             res.send(stubovi)
         })
         .catch(err => console.log(err))
-}
-
-const getSingleStub = (id, req, res) => {
-    Stub.findOne({
-        where: {
-            id: id
-        },
-        include: Stanje
-    })
-        .then (
-            stub => {
-                res.send(
-                    {data: stub}
-                )
-            }
-        )
-        .catch(err => console.log(err))
-}
+})
 
 
 router.post('/api/stub', (req, res) => {

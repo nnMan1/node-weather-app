@@ -1,4 +1,5 @@
-var map = L.map('map').setView([42.77524, 19.42383], 9);
+let mapa = document.getElementById('map')
+var map = L.map('map').setView([mapa.dataset.sirina, mapa.dataset.duzina], mapa.dataset.zoom);
       var gl = L.mapboxGL({
         attribution: '<a href="https://www.maptiler.com/copyright/" target="_blank">© MapTiler</a> <a href="https://www.openstreetmap.org/copyright" target="_blank">© OpenStreetMap contributors</a>',
         accessToken: 'not-needed',

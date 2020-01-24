@@ -28,8 +28,18 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
 app.get('', (req, res) => {
+    let sirina = 42.77524;
+    let duzina = 19.42383;
+    let zoom = 9;
+    if (req.query.sirina !== undefined) sirina = req.query.sirina
+    if (req.query.duzina !== undefined) duzina = req.query.duzina
+    if (req.query.zoom !== undefined) zoom = req.query.zoom
+
     res.render('index', {
         title: 'Elektro sistem',
+        sirina: sirina,
+        duzina: duzina,
+        zoom: zoom,
         name: 'Dosljak Velibor'
     })
 })

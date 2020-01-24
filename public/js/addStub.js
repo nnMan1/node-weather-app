@@ -53,5 +53,7 @@ function ukloniStub (marker) {
 
 document.getElementById("addElementButton").onclick 
 = () => {
-    window.open("/","_self")
+    let center = map.getCenter()
+    let zoom = map.getZoom()
+    window.open(`/?sirina=${center.lat}&duzina=${center.lng}&zoom=${zoom}`,"_self")
 }

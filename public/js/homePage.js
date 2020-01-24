@@ -15,7 +15,9 @@ addElementButton.disabled = true;
 addElementButton.onclick = () => {
     switch (selectedValue) {
         case "Stub":
-            window.open("/stub/add","_self")
+            let center = map.getCenter()
+            let zoom = map.getZoom()
+            window.open(`/stub/add?sirina=${center.lat}&duzina=${center.lng}&zoom=${zoom}`,"_self")
             break
     }
 }

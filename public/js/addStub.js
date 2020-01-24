@@ -4,9 +4,13 @@ function addStub (data) {
             data: data
         })
         .then(
-            function success() {
-                alert("Stub je uspjesno dodat");
-                window.open("/");
+            function success(stub) {
+                let marker = L.marker(stub.geometry.coordinates).addTo(map).on('click', function(e) {
+                    if (ukloniStub) {
+                        ukloniStub(e.target.data)
+                    }
+                });
+                stuboviMarkers.addLayer(marker);
             },
         
             function fail(data, status) {
@@ -25,22 +29,22 @@ map.on('click', function(e) {
     });    
 });
 
-
-map.on('zoomend', function (e) {
-    zoom_based_layerchange();
-});
-
-
-function zoom_based_layerchange() {
-    //console.log(map.getZoom());
-
-var currentZoom = map.getZoom();
-    if (currentZoom < 17) {
-        map.removeLayer(stuboviMarkers);
-    } else {
-        map.addLayer(stuboviMarkers);
-    }
-}
-
-
 document.getElementById("map").style.cursor = "crosshair";
+
+function ukloniStub (marker) {
+    $.ajax('/api/stub', {
+        method: 'DELETE',
+        data: {
+           id: marker.data.id
+        }
+    })
+    .then(
+        function success() {
+            map.removeLayer(marker);
+        },
+    
+        function fail(data, status) {
+            alert('Request failed.  Returned status of ');
+        }
+    );
+}

@@ -5,14 +5,13 @@ var map = L.map('map').setView([42.77524, 19.42383], 9);
         style: 'https://api.maptiler.com/maps/b70c705e-6b80-4cc6-8718-0e061c056073/style.json?key=fuDms8pP4WajMwiCl9A9'
       }).addTo(map);
 
-var stubovi = [];
+var sviStubovi = [];
 var stuboviMarkers = L.layerGroup().addTo(map);
+
 var vodovi = [];
 var trafostanice = [];
 var gradovi = [];
 var selectedValue = undefined
-
-
 
 
 // var popLocation= new L.LatLng(42.77524, 19.42383);
@@ -30,8 +29,19 @@ function showAllStubovi () {
     })
     .then(
         function success(stubovi) {
+            sviStubovi = []
             stubovi.forEach(stub => {
                 let marker = L.marker(stub.geometry.coordinates).addTo(map)
+                sviStubovi.push({
+                    marker: marker,
+                    stub: stub
+                })
+                marker.data = stub
+                marker.on('click', function(e) {
+                    if (ukloniStub) {
+                        ukloniStub(e.target)
+                    }
+                });
                 stuboviMarkers.addLayer(marker);
             });
     

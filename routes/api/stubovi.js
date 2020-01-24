@@ -62,9 +62,25 @@ router.post('/api/stub', (req, res) => {
         geometry: point,
         stanje_id: stanje_id
     })
-        . then( state => res.redirect('/stub'))
+        . then( stub => res.send(stub))
         .catch( err => console.log(err))
     
+})
+
+router.delete('/api/stub', (req, res) => {
+    let {id} = req.body;
+    if (id === undefined) {
+        res.sendStatus(400);
+        return;
+    }
+    console.log(id)
+    Stub.destroy({
+        where: {
+            id: id
+        }
+    })
+    .then ( res.send(200))
+    .catch( err => console.log(err))
 })
 
 module.exports = router

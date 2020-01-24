@@ -36,7 +36,8 @@ app.get('', (req, res) => {
 
 app.get('/api/stub*', require('./routes/api/stubovi'));
 app.post('/api/stub', require('./routes/api/stubovi'));
-app.get('/stub*', require('./routes/web/stubovi'))
+app.delete('/api/stub', require('./routes/api/stubovi'));
+app.get('/stub*', require('./routes/web/stubovi'));
 
 app.get('/api/stanje*', require('./routes/api/stanja'));
 app.post('/api/stanje', require('./routes/api/stanja'));

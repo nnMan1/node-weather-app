@@ -78,8 +78,12 @@ input {
     stroke: red;
 }
 
-.uIstojMrezi {
+.uIstojMrezi1 {
     stroke: greenyellow;
+}
+
+.uIstojMrezi0 {
+    stroke: red;
 }
 
 

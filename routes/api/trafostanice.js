@@ -3,55 +3,58 @@ const router = express.Router()
 const Trafostanica = require('../../models/Trafostanica')
 const db = require('../../config/database')
 const Stanje = require('../../models/Stanje')
+const Sequelize = require('sequelize');
+const Op = Sequelize.Op
 
 
-router.get('/trafostanica', (req, res) => {
-    if (id = req.query.id) {
-        getSingleTrafostanica(id, req, res);
-     } else {
-        getAllTrafostanica(req,res);
-     } 
-})
+router.get('/api/trafostanica', (req, res) => {
+    let where = { [Op.and]: [] };
+    let attributes = Object.keys(Trafostanica.rawAttributes);
+    let order = []
+    let {  coordinates, rastojanje, id, vodovi } = req.query
 
-const getAllTrafostanica = (req, res) => {
+    console.log(coordinates)
+
+    if (coordinates && coordinates.length === 2 && rastojanje) {     
+        var location = Sequelize.literal(`ST_GeomFromText('POINT(${coordinates[0]} ${coordinates[1]})', 4326)`) ;
+        var distance = Sequelize.fn('ST_DistanceSphere',Sequelize.literal('"trafostanica"."geometry"'), location); 
+        attributes.push([distance, 'distance']);
+        // others.push('distance');
+        whereTmp = Sequelize.where(distance,  {[Op.lt]: rastojanje})
+        where[Op.and].push(whereTmp)
+    }  
+    
+    if (vodovi) {
+        var isConnected = Sequelize.literal(`exists(select vod.id from vod where ST_Intersects("trafostanica"."geometry", "vod"."geometry") and vod.id in (${vodovi}))`)
+        where[Op.and].push(isConnected)
+    }
+    
+    if (id) { where.id = id }
+
     Trafostanica.findAll({
-        include: Stanje
+        attributes: attributes,
+        include: Stanje,
+        where: where
     })
         .then( trafostanice => {
             res.send(trafostanice)
         })
         .catch(err => console.log(err))
-}
-
-const getSingleTrafostanica = (id, req, res) => {
-    Trafostanica.findOne({
-        where: {
-            id: id
-        },
-        include: Stanje
-    })
-        .then (
-            trafostanica => {
-                res.send(
-                    {data: trafostanica}
-                )
-            }
-        )
-        .catch(err => console.log(err))
-}
+})
 
 
-router.post('/trafostanica', (req, res) => {
-    let {  geo_duzina, geo_sirina, stanje_id, naziv, opis } = req.body
-
-    if (geo_duzina === undefined || geo_sirina === undefined || stanje_id === undefined || naziv === undefined) {
+router.post('/api/trafostanica', (req, res) => {
+    let {  coordinates, stanje_id, naziv, opis } = req.body
+    if (coordinates && coordinates.length === 2) {} else {res.sendStatus(400); return}
+    
+    if (  stanje_id === undefined || naziv === undefined) {
       res.sendStatus(400);
       return;
     }
 
     const point = {
         type: 'Point',
-        coordinates: [geo_duzina, geo_sirina]
+        coordinates: coordinates
     }
    
     Trafostanica.create({
@@ -60,9 +63,10 @@ router.post('/trafostanica', (req, res) => {
         naziv: naziv,
         opis: opis
     })
-        . then( state => res.redirect('/trafostanica'))
+        . then( trafostanica => res.send(trafostanica))
         .catch( err => console.log(err))
     
 })
 
+router.trafostanica
 module.exports = router

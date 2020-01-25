@@ -58,12 +58,13 @@ router.get('/api/vod/connected', (req, res) => {
     let attributes = Object.keys(Vod.rawAttributes);
 
     let {  coordinates } = req.query
+    
 
     ret = db.query(`WITH RECURSIVE t(id, mreza) AS (
                             VALUES (0, ST_GeomFromText('POINT(:geo_sirina :geo_duzina)', 4326))
                             UNION
-                                SELECT vod.id,geometry FROM vod, t WHERE ST_DistanceSphere(mreza, geometry) < 0.5)
-                            SELECT id FROM t;`, { replacements: {geo_sirina: parseFloat(coordinates[0]), geo_duzina: parseFloat(coordinates[1])},
+                                SELECT vod.id,geometry FROM vod, t WHERE ST_Intersects(mreza, geometry))
+                            SELECT id, exists(select * from vod, trafostanica, t as t1 where vod.id = t1.id and ST_Intersects(vod.geometry, trafostanica.geometry)) as has_power FROM t;`, { replacements: {geo_sirina: parseFloat(coordinates[0]), geo_duzina: parseFloat(coordinates[1])},
                                                     type: Sequelize.QueryTypes.SELECT})
                                                     .then( data => res.send(data))
                                                     .catch(err => res.status(400))

@@ -14,7 +14,9 @@ var stubIcon = L.icon({iconUrl: '/img/stub.png',  iconSize: [20, 20]})
 var sviVodovi = [];
 var vodoviPolylines = L.layerGroup().addTo(map);
 
-var trafostanice = [];
+var sveTrafostanice = [];
+var trafostaniceMarkers = L.layerGroup().addTo(map);
+
 var gradovi = [];
 
 
@@ -55,12 +57,6 @@ function showAllStubovi () {
                 });
                 stuboviMarkers.addLayer(marker);
             });
-    
-            var overlay = {
-                'vodovi': vodoviPolylines,
-                'stubovi': stuboviMarkers
-                };
-            L.control.layers(null, overlay).addTo(map);
             zoom_based_layerchange()
         },
     
@@ -96,12 +92,6 @@ function showAllVodovi () {
                 vodoviPolylines.addLayer(vodLine);
             });
       
-            var overlay = {
-                            'vodovi': vodoviPolylines,
-                            'stubovi': stuboviMarkers
-                            };
-            L.control.layers(null, overlay).addTo(map);
-            map.addLayer(vodoviPolylines)
             zoom_based_layerchange()
         },
     
@@ -111,6 +101,45 @@ function showAllVodovi () {
     );
 }
 
+function showAllTrafostanice () {
+    $.ajax('/api/trafostanica', {
+        data: {
+            
+        }
+    })
+    .then(
+        function success(trafostanice) {
+            sviStubovi = []
+            trafostanice.forEach(trafostanica => {
+                // let marker = L.marker(stub.geometry.coordinates, {icon: stubIcon}).addTo(map)
+                let marker = L.marker(trafostanica.geometry.coordinates).addTo(map)
+                sveTrafostanice.push({
+                    marker: marker,
+                    trafostanica: trafostanica
+                })
+                marker.data = trafostanica
+                marker.on('click', function(e) {
+                    if (window.ukloniTrafostanicu) {
+                        ukloniTrafostanicu(e.target)
+                    }
+                    if (window.dodajUVodTrafostanicu) {
+                        dodajUVod(e.target)
+                    }
+
+                    if (window.oznaciPovezaneVodove) {
+                        oznaciPovezaneVodove(e.target)
+                    }
+                });
+                trafostaniceMarkers.addLayer(marker);
+            });
+            zoom_based_layerchange()
+        },
+    
+        function fail(data, status) {
+            alert('Request failed.  Returned status of ' + status);
+        }
+    );
+}
 
 map.on('zoomend', function (e) {
     zoom_based_layerchange();
@@ -132,3 +161,10 @@ function addVodToMap(tacke) {
     vod = L.polyline(tacke).addTo(map)
     vodoviPolylines.addLayer(vod)
 }
+
+var overlay = {
+    'vodovi': vodoviPolylines,
+    'stubovi': stuboviMarkers,
+    'trafostanice':trafostaniceMarkers
+    };
+L.control.layers(null, overlay).addTo(map);

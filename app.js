@@ -53,7 +53,8 @@ app.get('/api/stanje*', require('./routes/api/stanja'));
 app.post('/api/stanje', require('./routes/api/stanja'));
 
 app.get('/api/trafostanica*', require('./routes/api/trafostanice'));
-app.post('/trafostanica', require('./routes/api/trafostanice'));
+app.post('/api/trafostanica', require('./routes/api/trafostanice'));
+app.get('/trafostanica*', require('./routes/web/trafostanice'));
 
 app.get('/api/potrosac*', require('./routes/api/potrosaci'));
 app.post('/api/potrosac', require('./routes/api/potrosaci'));

@@ -22,6 +22,9 @@ addElementButton.onclick = () => {
         case "Vod": 
             window.open(`/vod/add?sirina=${center.lat}&duzina=${center.lng}&zoom=${zoom}`,"_self")
             break
+        case  "Trafostanica":
+            window.open(`/trafostanica/add?sirina=${center.lat}&duzina=${center.lng}&zoom=${zoom}`,"_self")
+            break
     }
 }
 
@@ -34,13 +37,22 @@ function oznaciPovezaneVodove(marker) {
     })
     .then(
         function success(ids) {
+            $.ajax('/api')
+
             var realIds = []
-            for (i = 0; i< ids.length; i++) { realIds.push(parseInt(ids[i].id)); }
+            var hasPower = []
+            for (i = 0; i< ids.length; i++) { realIds.push(parseInt(ids[i].id)); hasPower.push(ids[i].has_power); }
             for (i=0; i<sviVodovi.length; i++) {
                 let vod = sviVodovi[i];
                 if (realIds.includes(vod.vod.id)) {
                     map.removeLayer(vod.vodLine)
-                    vod.vodLine = L.polyline(vod.vod.geometry.coordinates, { className: 'uIstojMrezi'}).addTo(map)
+                    if (ids[0].has_power == 1)
+                    vod.vodLine = L.polyline(vod.vod.geometry.coordinates, { className: 'uIstojMrezi1'}).addTo(map);
+                    else
+                    vod.vodLine = L.polyline(vod.vod.geometry.coordinates, { className: 'uIstojMrezi0'}).addTo(map);
+                } else {
+                    map.removeLayer(vod.vodLine)
+                    vod.vodLine = L.polyline(vod.vod.geometry.coordinates, { className: 'my_polyline'}).addTo(map)
                 }
             }
         },
@@ -53,3 +65,4 @@ function oznaciPovezaneVodove(marker) {
 
 showAllStubovi();
 showAllVodovi();
+showAllTrafostanice();

@@ -2,6 +2,7 @@ let tacke = []
 let oznaceniKrug = undefined
 let vod
 let circle
+let isEditingEnabled = true
 
 function getDistance(origin, destination) {
     // return distance in meters
@@ -23,6 +24,8 @@ function toRadian(degree) {
 }
 
 function dodajUVod(marker) {
+
+    if (!isEditingEnabled) { return; }
     if (tacke === undefined || tacke.length === 0) {
         
     } else {
@@ -45,6 +48,30 @@ function dodajUVod(marker) {
 
     vod = L.polyline(tacke, {className: 'vodUObradi'}).addTo(map)
     // }
+}
+
+function dodajUVodTrafostanicu(marker) {
+    if (!isEditingEnabled) {return;}
+    if (tacke === undefined || tacke.length === 0) {
+        
+    } else {
+        isEditingEnabled = false
+        let lastPoint = tacke[tacke.length - 1];
+        if (getDistance(lastPoint, marker.data.geometry.coordinates) > 25) {
+            alert("Oznacite stub koja je na rastojanju manjem od 25m od poslednjeg stuba");
+            return;
+        }
+
+        if(tacke.includes(marker.data.geometry.coordinates)) {
+            alert("Oznacite stub koji nije vec povezan u mrezu");
+            return;
+        }
+
+        map.removeLayer(vod)
+        map.removeLayer(circle)
+    }
+    tacke.push(marker.data.geometry.coordinates)
+    circle = L.circle(marker.data.geometry.coordinates, 25, {className: 'avalibleStubovi'}).addTo(map);
 }
 
 document.getElementById("save").onclick = () => {
@@ -82,3 +109,4 @@ document.getElementById("addElementButton").onclick
 
 showAllStubovi();
 showAllVodovi();
+showAllTrafostanice();

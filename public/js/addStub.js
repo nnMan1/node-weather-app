@@ -1,3 +1,5 @@
+var upravoDodatiStubovi = []
+
 function addStub (data) {
     $.ajax('/api/stub', {
             method: 'POST',
@@ -5,7 +7,8 @@ function addStub (data) {
         })
         .then(
             function success(stub) {
-                let marker = L.marker(stub.geometry.coordinates).addTo(map)
+                upravoDodatiStubovi.push(stub.id);
+                let marker = L.marker(stub.geometry.coordinates, {icon: stubEditableIcon}).addTo(map)
                 marker.data = stub
                 marker.on('click', function(e) {
                     if (ukloniStub) {
@@ -34,6 +37,9 @@ map.on('click', function(e) {
 document.getElementById("map").style.cursor = "crosshair";
 
 function ukloniStub (marker) {
+
+    if (!upravoDodatiStubovi.includes(marker.data.id)) { alert('Mozete ukloniti samo stubove koje ste dodali u ovoj sesiji'); return; }
+
     $.ajax('/api/stub', {
         method: 'DELETE',
         data: {
@@ -60,3 +66,5 @@ document.getElementById("addElementButton").onclick
 
 showAllStubovi();
 showAllVodovi();
+showAllPotrosaci();
+showAllTrafostanice();

@@ -25,6 +25,9 @@ addElementButton.onclick = () => {
         case  "Trafostanica":
             window.open(`/trafostanica/add?sirina=${center.lat}&duzina=${center.lng}&zoom=${zoom}`,"_self")
             break
+        case "Potrosac":
+            window.open(`/potrosac/add?sirina=${center.lat}&duzina=${center.lng}&zoom=${zoom}`,"_self")
+            break
     }
 }
 
@@ -66,3 +69,4 @@ function oznaciPovezaneVodove(marker) {
 showAllStubovi();
 showAllVodovi();
 showAllTrafostanice();
+showAllPotrosaci();

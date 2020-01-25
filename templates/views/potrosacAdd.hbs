@@ -7,9 +7,16 @@
 <body>
     <div class="main-content">
         {{>header}}
+        
         {{>mapa}}
-        <p>Oznacite mjesto na kojem zelite da dodate stub. Oznacite stub koji zelite da uklonite</p> 
-        <button id = "addElementButton" type="button" class="btn btn-primary">Zavrsi izmjene</button>
+        <div class = "input data">
+            <p>Oznacite mjesto na kojem zelite da dodate stub. Oznacite stub koji zelite da uklonite</p> 
+            <div style="padding-bottom: 25px;">
+                Ime i prezime: <input id="nameInputField" type="text" name="FirstName" value="Mickey" style="padding-bottom: 5px;"><br>
+            </div>
+            <button id = "addElementButton" type="button" class="btn btn-primary">Zavrsi izmjene</button>
+        </div>
+        
     </div>
 
     {{>footer}}

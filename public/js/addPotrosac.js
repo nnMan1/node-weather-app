@@ -1,18 +1,19 @@
 var potrosacData
 var potrosacMarker
+let imeInputField = document.querySelector("#nameInputField")
 
-function addStub (data) {
+function addPotrosac (data) {
     $.ajax('/api/potrosac', {
             method: 'POST',
             data: data
         })
         .then(
-            function success(stub) {
-                let marker = L.marker(stub.geometry.coordinates).addTo(map)
-                marker.data = stub
+            function success(potrosac) {
+                let marker = L.marker(potrosac.geometry.coordinates).addTo(map)
+                marker.data = potrosac
                 marker.on('click', function(e) {
-                    if (ukloniStub) {
-                        ukloniStub(e.target)
+                    if (window.ukloniPotrosac) {
+                        ukloniPotrosac(e.target)
                     }
                 });
                 stuboviMarkers.addLayer(marker);
@@ -26,33 +27,37 @@ function addStub (data) {
 
 
 map.on('click', function(e) {   
-    var popLocation= e.latlng;     
-    addStub({
-        geo_duzina: popLocation.lat,
-        geo_sirina: popLocation.lng,
+    var popLocation= e.latlng; 
+    if (imeInputField.value == "") {
+        alert("Morate popuniti ime potrosaca")
+        return
+    }    
+    addPotrosac({
+        coordinates: [popLocation.lat, popLocation.lng],
+        ime: imeInputField.value,
         stanje_id: 1
     });    
 });
 
 document.getElementById("map").style.cursor = "crosshair";
 
-function ukloniStub (marker) {
-    $.ajax('/api/stub', {
-        method: 'DELETE',
-        data: {
-           id: marker.data.id
-        }
-    })
-    .then(
-        function success() {
-            map.removeLayer(marker);
-        },
+// function ukloniStub (marker) {
+//     $.ajax('/api/stub', {
+//         method: 'DELETE',
+//         data: {
+//            id: marker.data.id
+//         }
+//     })
+//     .then(
+//         function success() {
+//             map.removeLayer(marker);
+//         },
     
-        function fail(data, status) {
-            alert('Request failed.  Returned status of ');
-        }
-    );
-}
+//         function fail(data, status) {
+//             alert('Request failed.  Returned status of ');
+//         }
+//     );
+// }
 
 document.getElementById("addElementButton").onclick 
 = () => {
@@ -66,3 +71,4 @@ document.getElementById("addElementButton").onclick
 
 showAllStubovi();
 showAllVodovi();
+showAllPotrosaci();

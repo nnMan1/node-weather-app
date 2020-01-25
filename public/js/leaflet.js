@@ -9,6 +9,7 @@ var map = L.map('map').setView([mapa.dataset.sirina, mapa.dataset.duzina], mapa.
 var sviStubovi = [];
 var stuboviMarkers = L.layerGroup().addTo(map);
 var stubIcon = L.icon({iconUrl: '/img/stub.png',  iconSize: [20, 20]})
+var stubEditableIcon = L.icon({iconUrl: '/img/stubEditable.png',  iconSize: [20, 20]})
 
 
 var sviVodovi = [];
@@ -17,7 +18,9 @@ var vodoviPolylines = L.layerGroup().addTo(map);
 var sveTrafostanice = [];
 var trafostaniceMarkers = L.layerGroup().addTo(map);
 
-var gradovi = [];
+var sviPotrosaci = [];
+var potrosaciMarkers = L.layerGroup().addTo(map);
+var potrosacIcon = L.icon({iconUrl: '/img/potrosac.png',  iconSize: [20, 20]})
 
 
 // var popLocation= new L.LatLng(42.77524, 19.42383);
@@ -109,7 +112,7 @@ function showAllTrafostanice () {
     })
     .then(
         function success(trafostanice) {
-            sviStubovi = []
+            sveTrafostanice = []
             trafostanice.forEach(trafostanica => {
                 // let marker = L.marker(stub.geometry.coordinates, {icon: stubIcon}).addTo(map)
                 let marker = L.marker(trafostanica.geometry.coordinates).addTo(map)
@@ -123,7 +126,7 @@ function showAllTrafostanice () {
                         ukloniTrafostanicu(e.target)
                     }
                     if (window.dodajUVodTrafostanicu) {
-                        dodajUVod(e.target)
+                        dodajUVodTrafostanicu(e.target)
                     }
 
                     if (window.oznaciPovezaneVodove) {
@@ -131,6 +134,50 @@ function showAllTrafostanice () {
                     }
                 });
                 trafostaniceMarkers.addLayer(marker);
+            });
+            zoom_based_layerchange()
+        },
+    
+        function fail(data, status) {
+            alert('Request failed.  Returned status of ' + status);
+        }
+    );
+}
+
+function showAllPotrosaci () {
+    $.ajax('/api/potrosac', {
+        data: {
+            
+        }
+    })
+    .then(
+        function success(potrosaci) {
+            sviPotrosaci = []
+            potrosaci.forEach(potrosac => {
+                let marker = L.marker(potrosac.geometry.coordinates, {icon: potrosacIcon}).addTo(map).bindPopup(`${potrosac.ime}`)
+                // let marker = L.marker(trafostanica.geometry.coordinates).addTo(map)
+                sviPotrosaci.push({
+                    marker: marker,
+                    potrosac: potrosac
+                })
+                marker.data = potrosac;
+                marker.on('click', (e) => {
+                    console.log('kliknjuti')
+                    if (window.dodajUVodPotrosac) {
+                        dodajUVodPotrosac(e.target)
+                    }
+
+                    if (window.oznaciPovezaneVodove) {
+                        oznaciPovezaneVodove(e.target)
+                    }
+                });
+                marker.on('mouseover', function (e) {
+                    e.target.openPopup();
+                });
+                marker.on('mouseout', function (e) {
+                    e.target.closePopup();
+                });
+                potrosaciMarkers.addLayer(marker);
             });
             zoom_based_layerchange()
         },
@@ -165,6 +212,7 @@ function addVodToMap(tacke) {
 var overlay = {
     'vodovi': vodoviPolylines,
     'stubovi': stuboviMarkers,
-    'trafostanice':trafostaniceMarkers
+    'trafostanice':trafostaniceMarkers,
+    'potrosaci': potrosaciMarkers
     };
 L.control.layers(null, overlay).addTo(map);

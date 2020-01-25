@@ -12,7 +12,7 @@ router.get('/potrosac/add', (req, res) => {
     if (req.query.duzina !== undefined) duzina = req.query.duzina
     if (req.query.zoom !== undefined) zoom = req.query.zoom
 
-    res.render('stubAdd', {
+    res.render('potrosacAdd', {
         title: 'Elektro sistem',
         sirina: sirina,
         duzina: duzina,

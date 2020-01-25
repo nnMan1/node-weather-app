@@ -25,6 +25,17 @@ function toRadian(degree) {
 
 function dodajUVod(marker) {
 
+    if (tacke.length > 0 && tacke[tacke.length - 1] == marker.data.geometry.coordinates) {
+        tacke.pop()
+        map.removeLayer(vod)
+        map.removeLayer(circle)
+        if (tacke.length > 0) {
+        circle = L.circle(tacke[tacke.length - 1], 25, {className: 'avalibleStubovi'}).addTo(map);
+        }
+        vod = L.polyline(tacke, {className: 'vodUObradi'}).addTo(map)
+        return
+    }
+
     if (!isEditingEnabled) { return; }
     if (tacke === undefined || tacke.length === 0) {
         
@@ -51,11 +62,23 @@ function dodajUVod(marker) {
 }
 
 function dodajUVodTrafostanicu(marker) {
+
+    if (tacke.length > 0 && tacke[tacke.length - 1] == marker.data.geometry.coordinates) {
+        tacke.pop()
+        map.removeLayer(vod)
+        map.removeLayer(circle)
+        if (tacke.length > 0) {
+        circle = L.circle(tacke[tacke.length - 1], 25, {className: 'avalibleStubovi'}).addTo(map);
+        }
+        vod = L.polyline(tacke, {className: 'vodUObradi'}).addTo(map)
+        isEditingEnabled = true
+        return
+    }
+
     if (!isEditingEnabled) {return;}
     if (tacke === undefined || tacke.length === 0) {
         
     } else {
-        isEditingEnabled = false
         let lastPoint = tacke[tacke.length - 1];
         if (getDistance(lastPoint, marker.data.geometry.coordinates) > 25) {
             alert("Oznacite stub koja je na rastojanju manjem od 25m od poslednjeg stuba");
@@ -67,11 +90,55 @@ function dodajUVodTrafostanicu(marker) {
             return;
         }
 
+        isEditingEnabled = false
+        alert('Nakon sto vod povezete na trafostanicu ne mozete ga dalje nastaviti')
+
         map.removeLayer(vod)
         map.removeLayer(circle)
     }
     tacke.push(marker.data.geometry.coordinates)
     circle = L.circle(marker.data.geometry.coordinates, 25, {className: 'avalibleStubovi'}).addTo(map);
+    vod = L.polyline(tacke, {className: 'vodUObradi'}).addTo(map)
+}
+
+function dodajUVodPotrosac(marker) {
+
+    if (tacke.length > 0 && tacke[tacke.length - 1] == marker.data.geometry.coordinates) {
+        tacke.pop()
+        map.removeLayer(vod)
+        map.removeLayer(circle)
+        if (tacke.length > 0) {
+        circle = L.circle(tacke[tacke.length - 1], 25, {className: 'avalibleStubovi'}).addTo(map);
+        }
+        vod = L.polyline(tacke, {className: 'vodUObradi'}).addTo(map)
+        isEditingEnabled = true
+        return
+    }
+
+    if (!isEditingEnabled) {return;}
+    if (tacke === undefined || tacke.length === 0) {
+        
+    } else {
+        let lastPoint = tacke[tacke.length - 1];
+        if (getDistance(lastPoint, marker.data.geometry.coordinates) > 25) {
+            alert("Oznacite stub koja je na rastojanju manjem od 25m od poslednjeg stuba");
+            return;
+        }
+
+        if(tacke.includes(marker.data.geometry.coordinates)) {
+            alert("Oznacite stub koji nije vec povezan u mrezu");
+            return;
+        }
+
+        isEditingEnabled = false
+        alert('Nakon sto vod povezete na potrosac ne mozete ga dalje nastaviti')
+
+        map.removeLayer(vod)
+        map.removeLayer(circle)
+    }
+    tacke.push(marker.data.geometry.coordinates)
+    circle = L.circle(marker.data.geometry.coordinates, 25, {className: 'avalibleStubovi'}).addTo(map);
+    vod = L.polyline(tacke, {className: 'vodUObradi'}).addTo(map)
 }
 
 document.getElementById("save").onclick = () => {
@@ -92,6 +159,7 @@ document.getElementById("save").onclick = () => {
             map.removeLayer(circle)
             map.removeLayer(vod)
             tacke = []
+            isEditingEnabled = true
         },
     
         function fail(data, status) {
@@ -110,3 +178,4 @@ document.getElementById("addElementButton").onclick
 showAllStubovi();
 showAllVodovi();
 showAllTrafostanice();
+showAllPotrosaci();

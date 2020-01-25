@@ -58,6 +58,7 @@ app.get('/trafostanica*', require('./routes/web/trafostanice'));
 
 app.get('/api/potrosac*', require('./routes/api/potrosaci'));
 app.post('/api/potrosac', require('./routes/api/potrosaci'));
+app.get('/potrosac*', require('./routes/web/potrosaci'));
 
 app.get('/api/tip_voda*', require('./routes/api/tipoviVoda'));
 app.post('/api/tip_voda', require('./routes/api/tipoviVoda'));

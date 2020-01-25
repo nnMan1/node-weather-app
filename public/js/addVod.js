@@ -41,9 +41,9 @@ function dodajUVod(marker) {
         map.removeLayer(circle)
     }
     tacke.push(marker.data.geometry.coordinates)
-    circle = L.circle(marker.data.geometry.coordinates, 25).addTo(map);
+    circle = L.circle(marker.data.geometry.coordinates, 25, {className: 'avalibleStubovi'}).addTo(map);
 
-    vod = L.polyline(tacke).addTo(map)
+    vod = L.polyline(tacke, {className: 'vodUObradi'}).addTo(map)
     // }
 }
 
@@ -59,8 +59,12 @@ document.getElementById("save").onclick = () => {
         }
     })
     .then(
-        function success(stub) {
+        function success(vod) {
             alert("Uspjesno ste dodali vod")
+            addVodToMap(tacke)
+            map.removeLayer(circle)
+            map.removeLayer(vod)
+            tacke = []
         },
     
         function fail(data, status) {
@@ -75,3 +79,6 @@ document.getElementById("addElementButton").onclick
     let zoom = map.getZoom()
     window.open(`/?sirina=${center.lat}&duzina=${center.lng}&zoom=${zoom}`,"_self")
 }
+
+showAllStubovi();
+showAllVodovi();

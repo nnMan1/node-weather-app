@@ -8,6 +8,8 @@ var map = L.map('map').setView([mapa.dataset.sirina, mapa.dataset.duzina], mapa.
 
 var sviStubovi = [];
 var stuboviMarkers = L.layerGroup().addTo(map);
+var stubIcon = L.icon({iconUrl: '/img/stub.png',  iconSize: [20, 20]})
+
 
 var sviVodovi = [];
 var vodoviPolylines = L.layerGroup().addTo(map);
@@ -33,7 +35,7 @@ function showAllStubovi () {
         function success(stubovi) {
             sviStubovi = []
             stubovi.forEach(stub => {
-                let marker = L.marker(stub.geometry.coordinates).addTo(map)
+                let marker = L.marker(stub.geometry.coordinates, {icon: stubIcon}).addTo(map)
                 sviStubovi.push({
                     marker: marker,
                     stub: stub
@@ -45,6 +47,10 @@ function showAllStubovi () {
                     }
                     if (window.dodajUVod) {
                         dodajUVod(e.target)
+                    }
+
+                    if (window.oznaciPovezaneVodove) {
+                        oznaciPovezaneVodove(e.target)
                     }
                 });
                 stuboviMarkers.addLayer(marker);
@@ -73,7 +79,7 @@ function showAllVodovi () {
     .then(
         function success(vodovi) {
             vodovi.data.forEach(vod => {
-                let vodLine = L.polyline(vod.geometry.coordinates, { className: 'my_polyline' }).addTo(map)
+                let vodLine = L.polyline(vod.geometry.coordinates, { className: 'my_polyline'}).addTo(map)
                 sviVodovi.push({
                     vodLine: vodLine,
                     vod: vod
@@ -122,5 +128,7 @@ var currentZoom = map.getZoom();
     }
 }
 
-showAllStubovi();
-showAllVodovi();
+function addVodToMap(tacke) {
+    vod = L.polyline(tacke).addTo(map)
+    vodoviPolylines.addLayer(vod)
+}

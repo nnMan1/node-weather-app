@@ -1,5 +1,8 @@
+var potrosacData
+var potrosacMarker
+
 function addStub (data) {
-    $.ajax('/api/stub', {
+    $.ajax('/api/potrosac', {
             method: 'POST',
             data: data
         })
@@ -57,6 +60,9 @@ document.getElementById("addElementButton").onclick
     let zoom = map.getZoom()
     window.open(`/?sirina=${center.lat}&duzina=${center.lng}&zoom=${zoom}`,"_self")
 }
+
+
+
 
 showAllStubovi();
 showAllVodovi();

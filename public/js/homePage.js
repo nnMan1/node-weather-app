@@ -24,3 +24,32 @@ addElementButton.onclick = () => {
             break
     }
 }
+
+function oznaciPovezaneVodove(marker) {
+    let coordinates = marker.data.geometry.coordinates
+
+    $.ajax('/api/vod/connected', {
+        method: 'GET',
+        data: {coordinates: coordinates}
+    })
+    .then(
+        function success(ids) {
+            var realIds = []
+            for (i = 0; i< ids.length; i++) { realIds.push(parseInt(ids[i].id)); }
+            for (i=0; i<sviVodovi.length; i++) {
+                let vod = sviVodovi[i];
+                if (realIds.includes(vod.vod.id)) {
+                    map.removeLayer(vod.vodLine)
+                    vod.vodLine = L.polyline(vod.vod.geometry.coordinates, { className: 'uIstojMrezi'}).addTo(map)
+                }
+            }
+        },
+    
+        function fail(data, status) {
+            alert('Request failed.  Returned status of ');
+        }
+    );
+}
+
+showAllStubovi();
+showAllVodovi();

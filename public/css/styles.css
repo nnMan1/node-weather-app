@@ -67,4 +67,19 @@ input {
      stroke-width: 1500;  
    } */
 
+.avalibleStubovi {
+    stroke: green;
+    opacity: 1;
+    fill: green;
+    fill-opacity: 0.4
+}
+
+.vodUObradi {
+    stroke: red;
+}
+
+.uIstojMrezi {
+    stroke: greenyellow;
+}
+
 

@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+<head>
+    {{>include}}
+</head>
+
+<body>
+    <div class="main-content">
+        {{>header}}
+        {{>mapa}}
+        <p>Oznacite mjesto na kojem zelite da dodate stub. Oznacite stub koji zelite da uklonite</p> 
+        <button id = "addElementButton" type="button" class="btn btn-primary">Zavrsi izmjene</button>
+    </div>
+
+    {{>footer}}
+     <script src="/js/leaflet.js"></script>
+     <script src="/js/addPotrosac.js"></script>
+</body>
+
+</html>

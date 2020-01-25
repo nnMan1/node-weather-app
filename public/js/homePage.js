@@ -13,11 +13,14 @@ addElementTypeRadioButtons.forEach(radioButton => {
 var addElementButton = document.getElementById("addElementButton");
 addElementButton.disabled = true;
 addElementButton.onclick = () => {
+    let center = map.getCenter()
+    let zoom = map.getZoom()
     switch (selectedValue) {
         case "Stub":
-            let center = map.getCenter()
-            let zoom = map.getZoom()
             window.open(`/stub/add?sirina=${center.lat}&duzina=${center.lng}&zoom=${zoom}`,"_self")
+            break
+        case "Vod": 
+            window.open(`/vod/add?sirina=${center.lat}&duzina=${center.lng}&zoom=${zoom}`,"_self")
             break
     }
 }

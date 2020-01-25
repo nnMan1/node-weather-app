@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head>
+    {{>include}}
+</head>
+
+<body>
+    <div class="main-content">
+        {{>header}}
+        {{>mapa}}
+        <p>Povezite stubove redosledom kojim zelite da ih povezete u mrezu</p> 
+        <button id = "addElementButton" type="button" class="btn btn-primary">Zavrsi izmjene</button>
+        <button id = "save" type="button" class="btn btn-success">Sacuvaj</button>
+    </div>
+
+    {{>footer}}
+     <script src="/js/leaflet.js"></script>
+     <script src="/js/addVod.js"></script>
+</body>
+
+</html>

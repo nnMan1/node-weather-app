@@ -60,4 +60,11 @@ input {
      cursor: crosshair;
 }
 
+/* .my_polyline { 
+    stroke: red;
+     fill: none;
+     stroke-dasharray: 10,10; 
+     stroke-width: 1500;  
+   } */
+
 

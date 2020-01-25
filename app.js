@@ -63,6 +63,7 @@ app.post('/api/tip_voda', require('./routes/api/tipoviVoda'));
 
 app.get('/api/vod*', require('./routes/api/vodovi'));
 app.post('/api/vod', require('./routes/api/vodovi'));
+app.get('/vod*', require('./routes/web/vodovi'));
 
 
 // app.get('/weather', (req, res) => {

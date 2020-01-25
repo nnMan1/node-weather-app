@@ -5,7 +5,7 @@ const Vod = require('../../models/Vod');
 const Stanje = require('../../models/Stanje');
 const TipVoda = require('../../models/TipVoda');
 
-router.get('/vod', (req, res) => {
+router.get('/api/vod', (req, res) => {
     if (id = req.query.id) {
        getSingleVod(id, req, res);
     } else {
@@ -41,7 +41,7 @@ const getAllVod = (req, res) => {
     })
 }
 
-router.post('/vod', (req, res) => {
+router.post('/api/vod', (req, res) => {
     let { tacke, otpor, napon, vod_tip_id, stanje_id } = req.body
     console.log(req.body)
     if (tacke === undefined || vod_tip_id === undefined || stanje_id === undefined || napon === undefined || otpor === undefined) {

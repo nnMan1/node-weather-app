@@ -9,7 +9,9 @@ var map = L.map('map').setView([mapa.dataset.sirina, mapa.dataset.duzina], mapa.
 var sviStubovi = [];
 var stuboviMarkers = L.layerGroup().addTo(map);
 
-var vodovi = [];
+var sviVodovi = [];
+var vodoviPolylines = L.layerGroup().addTo(map);
+
 var trafostanice = [];
 var gradovi = [];
 
@@ -38,15 +40,62 @@ function showAllStubovi () {
                 })
                 marker.data = stub
                 marker.on('click', function(e) {
-                    if (ukloniStub) {
+                    if (window.ukloniStub) {
                         ukloniStub(e.target)
+                    }
+                    if (window.dodajUVod) {
+                        dodajUVod(e.target)
                     }
                 });
                 stuboviMarkers.addLayer(marker);
             });
     
-            var overlay = {'markers': stuboviMarkers};
+            var overlay = {
+                'vodovi': vodoviPolylines,
+                'stubovi': stuboviMarkers
+                };
             L.control.layers(null, overlay).addTo(map);
+            zoom_based_layerchange()
+        },
+    
+        function fail(data, status) {
+            alert('Request failed.  Returned status of ' + status);
+        }
+    );
+}
+
+function showAllVodovi () {
+    $.ajax('/api/vod', {
+        data: {
+            
+        }
+    })
+    .then(
+        function success(vodovi) {
+            vodovi.data.forEach(vod => {
+                let vodLine = L.polyline(vod.geometry.coordinates, { className: 'my_polyline' }).addTo(map)
+                sviVodovi.push({
+                    vodLine: vodLine,
+                    vod: vod
+                })
+                vodLine.data = vod
+                // marker.on('click', function(e) {
+                //     if (window.ukloniStub) {
+                //         ukloniStub(e.target)
+                //     }
+                //     if (window.dodajUVod) {
+                //         dodajUVod(e.target)
+                //     }
+                // });
+                vodoviPolylines.addLayer(vodLine);
+            });
+      
+            var overlay = {
+                            'vodovi': vodoviPolylines,
+                            'stubovi': stuboviMarkers
+                            };
+            L.control.layers(null, overlay).addTo(map);
+            map.addLayer(vodoviPolylines)
             zoom_based_layerchange()
         },
     
@@ -73,4 +122,5 @@ var currentZoom = map.getZoom();
     }
 }
 
-showAllStubovi()
+showAllStubovi();
+showAllVodovi();

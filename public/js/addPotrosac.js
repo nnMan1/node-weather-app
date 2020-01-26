@@ -1,6 +1,7 @@
 var potrosacData
 var potrosacMarker
 let imeInputField = document.querySelector("#nameInputField")
+imeInputField.value = ""
 
 function addPotrosac (data) {
     $.ajax('/api/potrosac', {
@@ -9,7 +10,7 @@ function addPotrosac (data) {
         })
         .then(
             function success(potrosac) {
-                let marker = L.marker(potrosac.geometry.coordinates).addTo(map)
+                let marker = L.marker(potrosac.geometry.coordinates, {icon: potrosacIcon}).addTo(map)
                 marker.data = potrosac
                 marker.on('click', function(e) {
                     if (window.ukloniPotrosac) {
@@ -17,6 +18,7 @@ function addPotrosac (data) {
                     }
                 });
                 stuboviMarkers.addLayer(marker);
+                imeInputField.value = ""
             },
         
             function fail(data, status) {
@@ -65,9 +67,6 @@ document.getElementById("addElementButton").onclick
     let zoom = map.getZoom()
     window.open(`/?sirina=${center.lat}&duzina=${center.lng}&zoom=${zoom}`,"_self")
 }
-
-
-
 
 showAllStubovi();
 showAllVodovi();

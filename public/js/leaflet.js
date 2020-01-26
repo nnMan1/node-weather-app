@@ -188,7 +188,7 @@ function showAllPotrosaci () {
     );
 }
 
-map.on('zoomend', function (e) {
+map.on('zoom', function (e) {
     zoom_based_layerchange();
 });
 
@@ -197,10 +197,22 @@ function zoom_based_layerchange() {
     //console.log(map.getZoom());
 
 var currentZoom = map.getZoom();
-    if (currentZoom < 17) {
+    if (currentZoom < 20) {
         map.removeLayer(stuboviMarkers);
     } else {
         map.addLayer(stuboviMarkers);
+    }
+
+    if (currentZoom < 18) {
+        map.removeLayer(potrosaciMarkers);
+    } else {
+        map.addLayer(potrosaciMarkers);
+    }
+
+    if (currentZoom < 14) {
+        map.removeLayer(trafostaniceMarkers);
+    } else {
+        map.addLayer(trafostaniceMarkers);
     }
 }
 
